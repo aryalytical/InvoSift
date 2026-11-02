@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Invoice Data Extractor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">AI Invoice Data Extractor <span class="tag">100% local</span></div>
+    <nav>
+      <a href="#/upload" data-nav="upload">Upload</a>
+      <a href="#/dashboard" data-nav="dashboard">Dashboard</a>
+      <a href="#/settings" data-nav="settings">Status</a>
+    </nav>
+    <div class="health-dot" id="healthDot" title="System status"></div>
+  </header>
+
+  <main id="app">
+    <!-- Upload -->
+    <section id="view-upload" class="view">
+      <div class="hero">
+        <h1>AI Invoice Data Extractor</h1>
+        <p>Upload and automatically extract invoice information using local AI.</p>
+      </div>
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Drop an invoice here or press Enter to choose a file">
+        <div class="dz-title">Drag &amp; Drop Invoice</div>
+        <div class="dz-sub">or</div>
+        <button class="btn primary" id="chooseBtn" type="button">Choose File</button>
+        <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" hidden>
+      </div>
+      <p class="supported">Supported: PDF, PNG, JPG, JPEG &middot; processed entirely on this computer</p>
+      <div id="uploadStatus"></div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="view-dashboard" class="view" hidden>
+      <div class="cards" id="statCards"></div>
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Invoice history</h2>
+          <div class="row-gap">
+            <input type="search" id="searchBox" placeholder="Search invoice no, supplier, file..." aria-label="Search invoices">
+            <button class="btn" id="exportAllBtn">Export all (Excel)</button>
+            <button class="btn" id="exportAllCsvBtn">Export all (CSV)</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data" id="historyTable">
+            <thead><tr><th>Invoice No</th><th>Supplier</th><th>Date</th><th class="num">Total</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div id="historyEmpty" class="empty" hidden>No invoices yet. <a href="#/upload">Upload your first invoice</a>.</div>
+      </div>
+    </section>
+
+    <!-- Detail -->
+    <section id="view-detail" class="view" hidden>
+      <div class="detail-head">
+        <a href="#/dashboard" class="back">&larr; Dashboard</a>
+        <div class="row-gap" id="detailActions"></div>
+      </div>
+      <div class="split">
+        <div class="panel preview-panel">
+          <div class="panel-head"><h2>Invoice preview</h2><span id="pageInfo" class="muted"></span></div>
+          <div id="previewBox" class="preview-box"></div>
+        </div>
+        <div class="panel info-panel" id="infoPanel"></div>
+      </div>
+    </section>
+
+    <!-- Status -->
+    <section id="view-settings" class="view" hidden>
+      <div class="panel narrow">
+        <div class="panel-head"><h2>System status</h2><button class="btn" id="recheckBtn">Re-check</button></div>
+        <ul class="status-list" id="statusList"></ul>
+        <div id="statusHelp" class="help"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="script.js"></script>
+</body>
+</html>

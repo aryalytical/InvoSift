@@ -1,0 +1,75 @@
+{
+  "name": "invosift-desktop",
+  "version": "1.0.0",
+  "description": "Local-first AI invoice extraction and review for Windows",
+  "main": "electron/main.js",
+  "author": "InvoSift",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dist": "npm run dist:win",
+    "build:backend": "powershell -ExecutionPolicy Bypass -File scripts/build-backend.ps1",
+    "postinstall": "node node_modules/electron/install.js",
+    "dist:win": "npm run build:backend && electron-builder --win nsis portable --x64"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.invosift.desktop",
+    "productName": "InvoSift",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "ui/**/*",
+      "package.json",
+      "build/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "backend_src",
+        "to": "backend_src"
+      },
+      {
+        "from": "backend_dist",
+        "to": "backend"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "InvoSift-${version}-${target}.${ext}",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "artifactName": "InvoSift-${version}-Setup-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "InvoSift-${version}-Portable-${arch}.${ext}"
+    }
+  }
+}
